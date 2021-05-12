@@ -1,10 +1,10 @@
-package com.azurealstn.myblog.controller;
+package com.azurealstn.myblog.test;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HelloController {
+public class HelloControllerTest {
 
     @GetMapping("/hello")
     public String hello() {
