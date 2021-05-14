@@ -6,6 +6,7 @@ import com.azurealstn.myblog.model.User;
 import com.azurealstn.myblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,18 +20,19 @@ public class UserApiController {
     private UserService userService;
 
     @Autowired
-    private HttpSession httpSession;
+    private BCryptPasswordEncoder encoder;
 
-    @PostMapping("/api/user")
+    @PostMapping("/auth/joinProc")
     public ResponseDto<Integer> save(@RequestBody User user) {
         System.out.println("UserApiController: save 호출");
-        user.setRole(RoleType.USER);
         userService.userJoin(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 
+    /*
+    //로그인의 전통적인 방식
     @PostMapping("/api/user/login")
-    public ResponseDto<Integer> login(@RequestBody User user) {
+    public ResponseDto<Integer> login(@RequestBody User user, HttpSession httpSession) {
         System.out.println("UserApiController: login 호출");
         User principal = userService.userLogin(user); //principal: 접근주체
 
@@ -39,4 +41,5 @@ public class UserApiController {
         }
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
+    */
 }

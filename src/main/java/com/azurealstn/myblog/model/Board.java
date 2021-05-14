@@ -28,7 +28,6 @@ public class Board {
     @Lob //대용량 데이터일 때 사용
     private String content;
 
-    @ColumnDefault("0")
     private int count; //조회수
 
     @ManyToOne //Board : User -> Many : One, 관계 설정

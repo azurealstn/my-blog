@@ -1,4 +1,4 @@
-package com.azurealstn.myblog.configuration;
+package com.azurealstn.myblog.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

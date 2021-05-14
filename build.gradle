@@ -20,9 +20,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation group: 'org.springframework.security', name: 'spring-security-taglibs'
+	implementation group: 'org.springframework.security', name: 'spring-security-taglibs'
 	implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper'
 	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
 	compileOnly 'org.projectlombok:lombok'
