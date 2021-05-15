@@ -4,6 +4,10 @@ import com.azurealstn.myblog.model.RoleType;
 import com.azurealstn.myblog.model.User;
 import com.azurealstn.myblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,19 @@ public class UserService {
         user.setPassword(encPassword);
         user.setRole(RoleType.USER);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void userUpdate(User user) {
+        //수정시에는 영속성 컨텍스트에 User를 영속화시키고, 영속화된 User를 수정
+        User persistence = userRepository.findById(user.getId()).orElseThrow(() -> {
+            return new IllegalArgumentException("회원 찾기 실패");
+        });
+        String rawPassword = user.getPassword();
+        String encPassword = encoder.encode(rawPassword); //비밀번호 암호화
+        persistence.setPassword(encPassword);
+        persistence.setEmail(user.getEmail());
+
     }
 
     /*
