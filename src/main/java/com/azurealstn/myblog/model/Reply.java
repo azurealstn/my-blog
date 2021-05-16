@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -32,5 +33,5 @@ public class Reply {
     private User user; //누가 댓글을 달았는지
 
     @CreationTimestamp
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 }

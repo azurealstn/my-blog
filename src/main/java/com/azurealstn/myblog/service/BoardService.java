@@ -1,9 +1,11 @@
 package com.azurealstn.myblog.service;
 
 import com.azurealstn.myblog.model.Board;
+import com.azurealstn.myblog.model.Reply;
 import com.azurealstn.myblog.model.RoleType;
 import com.azurealstn.myblog.model.User;
 import com.azurealstn.myblog.repository.BoardRepository;
+import com.azurealstn.myblog.repository.ReplyRepository;
 import com.azurealstn.myblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,9 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Transactional
     public void boardPost(Board board, User user) {
@@ -52,5 +57,20 @@ public class BoardService {
         board.setTitle(requestBoard.getTitle());
         board.setContent(requestBoard.getContent());
         //Service 종료시 트랜잭션이 종료되고 더티체킹이 발생하여 자동 업데이트가 됨 (DB flush)
+    }
+
+    @Transactional
+    public void replyPost(User user, int boardId, Reply requestReply) {
+
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("댓글 쓰기 실패: 게시글 id를 찾을 수 없습니다."));;
+
+        requestReply.setUser(user);
+        requestReply.setBoard(board);
+        replyRepository.save(requestReply);
+    }
+
+    @Transactional
+    public void replyRemove(int replyId) {
+        replyRepository.deleteById(replyId);
     }
 }

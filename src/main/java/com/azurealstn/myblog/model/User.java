@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
     private int id; //시퀀스(oracle), auto_increment(mysql)
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String username; //id
 
     @Column(nullable = false, length = 100)
@@ -36,6 +36,8 @@ public class User {
     //DB는 RoleType이 없기 때문에 String으로 변환주어야 한다.
     @Enumerated(EnumType.STRING)
     private RoleType role; //Enum을 쓰는 것이 좋다. {admin, user}
+
+    private String oauth;
 
     @CreationTimestamp //시간 자동입력
     private Timestamp createDate;

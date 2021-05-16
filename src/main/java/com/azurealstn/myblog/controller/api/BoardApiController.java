@@ -3,6 +3,7 @@ package com.azurealstn.myblog.controller.api;
 import com.azurealstn.myblog.config.auth.PrincipalDetail;
 import com.azurealstn.myblog.dto.ResponseDto;
 import com.azurealstn.myblog.model.Board;
+import com.azurealstn.myblog.model.Reply;
 import com.azurealstn.myblog.model.User;
 import com.azurealstn.myblog.service.BoardService;
 import com.azurealstn.myblog.service.UserService;
@@ -33,6 +34,18 @@ public class BoardApiController {
     @PutMapping("/api/board/{id}")
     public ResponseDto<Integer> update(@PathVariable int id, @RequestBody Board board) {
         boardService.boardUpdate(id, board);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
+
+    @PostMapping("/api/board/{boardId}/reply")
+    public ResponseDto<Integer> replySave(@PathVariable int boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        boardService.replyPost(principalDetail.getUser(), boardId, reply);
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+    }
+
+    @DeleteMapping("/api/board/{boardId}/reply/{replyId}")
+    public ResponseDto<Integer> replyDelete(@PathVariable int replyId) {
+        boardService.replyRemove(replyId);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 }

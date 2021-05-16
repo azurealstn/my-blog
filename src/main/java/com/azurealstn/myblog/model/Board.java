@@ -1,5 +1,7 @@
 package com.azurealstn.myblog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -34,9 +37,11 @@ public class Board {
     @JoinColumn(name = "userId") //필드명
     private User user; //두 테이블을 조인해서 FK 생성
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER) //MappedBy: 연관관계의 주인이 아니다.(난 FK가 아니다.) DB에 컬럼을 만들면 안된다.
-    private List<Reply> reply;
+    @OrderBy("id desc")
+    @JsonIgnoreProperties({"board"})
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //MappedBy: 연관관계의 주인이 아니다.(난 FK가 아니다.) DB에 컬럼을 만들면 안된다.
+    private List<Reply> replies;
 
     @CreationTimestamp
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 }

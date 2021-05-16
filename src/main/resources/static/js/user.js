@@ -24,9 +24,13 @@ let index = {
       contentType: 'application/json; charset=utf-8', //body 데이터의 타입(MIME)
       dataType: 'json' //응답이 string이 아닌 json
     }).done(function(response) {
-        alert('회원가입이 완료되었습니다.');
-        //console.log(response);
-        location.href = '/';
+        if (response.status === 500) {
+          alert('회원가입이 실패했습니다.');
+        } else {
+          alert('회원가입이 완료되었습니다.');
+          //console.log(response);
+          location.href = '/';
+        }
     }).fail(function(error) {
         alert(JSON.stringify(error));
     });

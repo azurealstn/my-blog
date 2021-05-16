@@ -22,6 +22,14 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    @Transactional(readOnly = true)
+    public User userFind(String username) {
+        User user = userRepository.findByUsername(username).orElseGet(() -> {
+            return new User();
+        });
+        return user;
+    }
+
     @Transactional
     public void userJoin(User user) {
         String rawPassword = user.getPassword(); //원래 비밀번호
@@ -37,10 +45,14 @@ public class UserService {
         User persistence = userRepository.findById(user.getId()).orElseThrow(() -> {
             return new IllegalArgumentException("회원 찾기 실패");
         });
-        String rawPassword = user.getPassword();
-        String encPassword = encoder.encode(rawPassword); //비밀번호 암호화
-        persistence.setPassword(encPassword);
-        persistence.setEmail(user.getEmail());
+
+        //validation 체크 (kakao는 비밀번호, 이메일 수정 불가)
+        if (persistence.getOauth() == null || persistence.getOauth().equals("")) {
+            String rawPassword = user.getPassword();
+            String encPassword = encoder.encode(rawPassword); //비밀번호 암호화
+            persistence.setPassword(encPassword);
+            persistence.setEmail(user.getEmail());
+        }
 
     }
 
